@@ -1,2 +1,8 @@
-# poe-trade-importer
-Allows to import objects from Poe Ninja or Path of Building and search for similar items in the marketplace
+# Poe Importer
+
+### Special tokens in mod
+
+reduced translates_to increased with negative argument
+
+### Search for pseudo
+increased | reduced 
