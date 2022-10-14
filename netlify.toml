@@ -1,7 +1,7 @@
 # Redirects the poe trade api 
 [[redirects]]
-  from = "/api"
-  to = "https://www.pathofexile.com/"
+  from = "api/trade/data/stats"
+  to = "https://www.pathofexile.com/api/trade/data/stats"
   status = 200
   force = true
   

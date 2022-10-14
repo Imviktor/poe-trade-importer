@@ -21,6 +21,11 @@ const instance = axios.create({
     timeout: 15000
 });
 
+instance.interceptors.request.use(request => {
+    console.log(request)
+    return request
+})
+
 const responseBody = (response: AxiosResponse) => {
     return response.data
 };
