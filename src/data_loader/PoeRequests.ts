@@ -7,7 +7,8 @@ function _getUrl(): string {
     if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'production') {
         return "https://www.pathofexile.com/api/trade/"
     } else {
-    return "api/trade/"
+        return "api/trade/"
+    }
 }
 
 const instance = axios.create({
