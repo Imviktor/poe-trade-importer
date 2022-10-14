@@ -4,4 +4,10 @@
   to = "https://www.pathofexile.com/api/trade/data/stats"
   status = 200
   force = true
+
+[[redirects]]
+  from = "api/trade/search/Kalandra"
+  to = "https://www.pathofexile.com/api/trade/search/Kalandra"
+  status = 200
+  force = true
   
