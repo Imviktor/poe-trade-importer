@@ -27,7 +27,7 @@ const requests = {
             headers:
             {
                 'Content-Type': 'application/json',
-                'User-Agent': 'electron/1.0.0'
+                'Referrer-Policy': 'strict-origin-when-cross-origin'
             },
         }
     ).then(responseBody),
@@ -38,7 +38,7 @@ const requests = {
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'User-Agent': 'electron/1.0.0'
+                    'Referrer-Policy': 'strict-origin-when-cross-origin'
                 },
             }
         );
