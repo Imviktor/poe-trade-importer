@@ -2,7 +2,16 @@ import axios, { AxiosResponse } from "axios";
 import { Request, Response } from "./SearchRequest";
 import { processStats, Stat } from "./StatsLoader";
 
-
+/*
+ * The URL is relative because in DEV mode, Vite is configured to use a proxy dev server and in Netlify also.
+ * This is due to the CORS error when requesting the STATS to the poe trade API. It might cause problems if
+ * the application is deployed in other platform. In that case, try to use the full URL.
+ * 
+ * Netlify configuration: /netlify.toml
+ * Vite configuration: /vite.config.ts
+ * 
+ * Full URL: https://www.pathofexile.com/api/trade/
+ */
 function _getUrl(): string {
     if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'production') {
         return "https://www.pathofexile.com/api/trade/"
@@ -26,8 +35,7 @@ const requests = {
         {
             headers:
             {
-                'Content-Type': 'application/json',
-                'Referrer-Policy': 'strict-origin-when-cross-origin'
+                'Content-Type': 'application/json'
             },
         }
     ).then(responseBody),
@@ -37,8 +45,7 @@ const requests = {
             JSON.stringify(request),
             {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Referrer-Policy': 'strict-origin-when-cross-origin'
+                    'Content-Type': 'application/json'
                 },
             }
         );
