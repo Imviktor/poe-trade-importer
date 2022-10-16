@@ -66,13 +66,11 @@ export function createRequest(modifiers: AugmentedModifier[]): Request {
 
     const statFilters: StatsFilter[] = []
     for (const mod of modifiers) {
-        if (mod.selectedVariantId != '') {
-            const statsValue = {
-                min: mod.valueMin,
-                max: mod.valueMax
-            }
-            statFilters.push(new StatsFilter(mod.selectedVariantId, statsValue, false));
+        const statsValue = {
+            min: mod.valueMin,
+            max: mod.valueMax
         }
+        statFilters.push(new StatsFilter(mod.variants[mod.selectedVariant].id, statsValue, false));
     }
 
     return new Request(new Query(new Array<Operators>(new Operators(statFilters))))

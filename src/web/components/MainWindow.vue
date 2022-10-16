@@ -1,18 +1,19 @@
 <template>
-  <p class="display-3 fw-normal text-center">Poe Ninja Item Trader</p>
+  <div class="container-lg">
+    <p class="display-3 fw-normal text-center">Poe Ninja Item Trader</p>
 
-  <div class="row align-items-start">
+    <div class="row justify-content-md-center">
 
-    <div class="col">
-      <ItemParser />
+      <div class="col-5">
+        <ItemParser />
+      </div>
+
+      <div class="col-7">
+        <Modifiers />
+      </div>
+
     </div>
-
-    <div class="col">
-      <Modifiers />
-    </div>
-
   </div>
-
 </template>
 
 <script lang="ts">

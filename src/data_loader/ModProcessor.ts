@@ -40,12 +40,13 @@ export class ProcessedMod {
 }
 
 const replacements: { [index: string]: Replacement; } = {
-    'reduced': new Replacement('increased', ReplacementOperation.Negative)
+    'reduced': new Replacement('increased', ReplacementOperation.Negative),
+    'Curse': new Replacement('Curses')
 }
 
 
 export function buildModifier(rawMod: string, type: ModifierGroup, stats: Stat[]): Modifier {
-    const replacedMod = inverseReplacements(rawMod)
+    const replacedMod = _modTextReplacements(rawMod)
 
     // Filter by type
     let matchedStats: Stat[] = []
@@ -72,17 +73,15 @@ export function buildModifier(rawMod: string, type: ModifierGroup, stats: Stat[]
      * A variant is the same modifier defined in multiple types (fractured, veiled, etc).
      * valid only for explicit modifiers.
      */
-    if (type == ModifierGroup.Explicit) {
-        const modVariants: ModVariant[] = []
-        for (const match of matchedStats) {
-            modVariants.push(new ModVariant(match.id, match.type))
-        }
+    const modVariants: ModVariant[] = []
+    for (const match of matchedStats) {
+        modVariants.push(new ModVariant(match.id, match.type))
     }
 
     const matchedStat = matchedStats[0]
     const arg = _extractArguments(replacedMod, matchedStat)
 
-    return new Modifier(matchedStat.text, [], arg)
+    return new Modifier(matchedStat.text, modVariants, arg)
 
 }
 
@@ -122,8 +121,9 @@ function _extractArguments(processedMod: ProcessedMod, matchedStat: Stat): Argum
 }
 
 
-// This function translates inverses like reduced to increased with a negative value
-export function inverseReplacements(mod: string): ProcessedMod {
+// This function translates modifiers that the object has but they would not match with
+// any 'official' stats. Some replacements must be done
+export function _modTextReplacements(mod: string): ProcessedMod {
     let replaced = mod;
     const replacement = Object.keys(replacements).filter(k => mod.indexOf(k) != -1)
     if (replacement.length > 0) {

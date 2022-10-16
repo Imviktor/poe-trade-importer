@@ -13,16 +13,30 @@ import { processStats, Stat } from "./StatsLoader";
  * Full URL: https://www.pathofexile.com/api/trade/
  */
 function _getUrl(): string {
+    if (process.env.NODE_ENV === 'test'){
+        return 'https://www.pathofexile.com/api/trade/'
+    }
     return "api/trade/"
+}
+
+function _getHeaders():any {
+    if (process.env.NODE_ENV === 'test'){
+        return {
+            'User-Agent': 'electron/1.0.0'
+        }
+    }
+    return {}
 }
 
 const instance = axios.create({
     baseURL: _getUrl(),
-    timeout: 15000
+    timeout: 15000,
+    headers: _getHeaders()
 });
 
+// Used to debug purposes
 instance.interceptors.request.use(request => {
-    console.log(request)
+    //console.log(request)
     return request
 })
 

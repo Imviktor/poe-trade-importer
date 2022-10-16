@@ -12,51 +12,40 @@
         <input type="range" class="form-range" id="modRange" min="0" max="25" step="5" v-model="range"
             @change="maxEnabledChanged()">
     </div>
-    <div class="list-group">
-        <a href="#" v-for="(mod,i) in mods" :key="mod.itemMod"
-            class="list-group-item list-group-item-action flex-column align-items-start bg-dark text-white">
-            <div class="d-flex justify-content-between form-check">
-                <div>
-                    <input class="form-check-input" type="checkbox" value="" :id="'modCheck' + i"
-                        :checked="selectedMods[i]" @change="checkMod(selectedMods, i, $event)" />
-                    <label :class="'form-check-label mb-1' + (mod.arg.isNumeric? 'w-75': 'w-50')" :for="'modCheck' + i">
-                        <p>{{mod.itemMod}}</p>
-                    </label>
-                </div>
-                <!-- Numeric argument -->
-                <div class="input-stretch input-group mb-3" v-if="isNumericArg(mod)">
-                    <input type="text" class="form-control form-control-sm bg-dark text-white" placeholder="min"
-                        :value="mod.valueMin" />
-                    <input :type="maxEnabled ? 'text': 'hidden'" class="form-control form-control-sm bg-dark text-white"
-                        placeholder="max" :value="mod.valueMax" :disabled="!maxEnabled" />
-                </div>
-                <!-- Text argument -->
-                <div class="input-stretch input-group mb-3 w-50" v-if="isTextArg(mod)">
-                    <input type="text" class="form-control form-control-sm bg-dark text-white" placeholder="min"
-                        :value="mod.arg.value" readonly />
-                </div>
-                <!-- Options argument -->
-                <div class="input-stretch input-group mb-3 w-50" v-if="isTextWithOptionsArg(mod)">
-                    <select class="form-select form-select-sm bg-dark text-white" :value="mod.arg.value">
-                        <option v-for="opt in mod.arg.options" :value="opt.text" :selected="opt.text == mod.arg.value">
-                            {{opt.text}}
-                        </option>
-                    </select>
-                </div>
+    <template v-for="(mod,i) in mods" :key="mod.itemMod">
+        <div class="d-flex">
+            <input class="form-check-input" type="checkbox" v-model="mod.selected" />
+            <p :class="'mx-3 p-1 fst-italic text-center fw-bold item-' + mod.variants[mod.selectedVariant].type">
+                {{mod.variants[mod.selectedVariant].type.toUpperCase()}}
+            </p>
+            <p class="me-auto">{{mod.itemMod}}</p>
+            <!-- Numeric argument -->
+            <input type="text" class="input-stretch my-auto form-control form-control-sm bg-dark text-white"
+                placeholder="min" v-model="mod.valueMin" v-if="isNumericArg(mod)" />
+            <input :type="maxEnabled ? 'text': 'hidden'"
+                class="input-stretch my-auto form-control form-control-sm bg-dark text-white" placeholder="max"
+                :value="mod.valueMax" :disabled="!maxEnabled" v-if="isNumericArg(mod)" />
+            <!-- Text argument -->
+            <div v-if="isTextArg(mod)">
+                <input type="text" class="form-control form-control-sm bg-dark text-white" placeholder="min"
+                    v-model="mod.arg.value" readonly />
             </div>
-            <div class="btn-group" aria-label="Variants">
-                <template v-for="(variant,j) in mod.modVariants" :key="variant.id" v-if="mod.modVariants.length > 1">
-                    <input type="radio" class="btn-check" :name="'btn-radio' + i" :id="'v' + i + '-' + j"
-                        autocomplete="off" :checked="j==0" v-model="mod.selectedVariantId" :value="variant.id" />
-                    <label class="btn" :for="'v' + i + '-' + j">
-                        <p :class="'mb-1 p-1 fst-italic fw-bold item-' + variant.type">
-                            {{variant.type.toUpperCase()}}
-                        </p>
-                    </label>
-                </template>
+            <!-- Options argument -->
+            <div v-if="isTextWithOptionsArg(mod)">
+                <select class="form-select form-select-sm bg-dark text-white" :value="mod.arg.value">
+                    <option v-for="opt in mod.arg.options" :value="opt.text" :selected="opt.text == mod.arg.value">
+                        {{opt.text}}
+                    </option>
+                </select>
             </div>
-        </a>
-    </div>
+            <select class="m-2 form-select-sm bg-dark text-white" style="width: 13%;" v-model="mod.selectedVariant"
+                :disabled="mod.variants.length ==1">
+                <option v-for="(variant, j) in mod.variants" :key="variant.type" :value="j">
+                    {{variant.type}}
+                </option>
+            </select>
+        </div>
+    </template>
     <input id="search-item" class="btn btn-lg btn-primary" type="button" value="Buscar" @click="prepareRequest(mods)"
         v-if="mods.length > 0" />
     <div class="container mx-auto">
@@ -67,7 +56,6 @@
 </template>
 
 <script lang="ts">
-import { Modifier } from '@popperjs/core';
 import { defineComponent } from 'vue';
 import { AugmentedModifier, ParsedItem } from '../../data_loader/ParsedItem';
 import { Requests } from '../../data_loader/PoeRequests';
@@ -78,31 +66,21 @@ export default defineComponent({
     name: 'Modifiers',
     data: function (): {
         mods: AugmentedModifier[],
-        selectedMods: boolean[],
         range: number,
         response: string,
         maxEnabled: boolean,
     } {
         return {
             mods: [],
-            selectedMods: [],
             range: 10,
             response: '',
             maxEnabled: false,
         }
     },
     methods: {
-        checkMod: function (selectedMods: boolean[], i: number, e: Event): void {
-            selectedMods[i] = (e.target as HTMLInputElement).checked;
-        },
         prepareRequest: function (mods: AugmentedModifier[]): void {
-            const modsToEvaluate: AugmentedModifier[] = []
-            for (const i in this.selectedMods) {
-                if (this.selectedMods[i]) {
-                    modsToEvaluate.push(mods[i])
-                }
-            }
-            const req = createRequest(modsToEvaluate)
+            const requestMods = Object.values(mods).filter(am => am.selected)
+            const req = createRequest(requestMods)
             Requests.search(req).then(r =>
                 this.response = r.id
             )
@@ -138,9 +116,7 @@ export default defineComponent({
             return this.$store.getters.parsedItem
         }, (value: ParsedItem) => {
             this.mods = []
-            this.selectedMods = []
             for (const mod of value.mods) {
-                this.selectedMods.push(true)
                 let min = 0
                 let max = 0
                 const arg = mod.arg
@@ -155,12 +131,12 @@ export default defineComponent({
                     }
                 }
 
-                let selectedVariantId = ''
-                if (mod.modVariants && mod.modVariants.length > 0) {
-                    selectedVariantId = mod.modVariants[0].id
+                let selectedVariant = 0
+                if (mod.variants && mod.variants.length > 0) {
+                    selectedVariant = 0
                 }
 
-                const augmented = new AugmentedModifier(mod, selectedVariantId, min, max)
+                const augmented = new AugmentedModifier(mod, selectedVariant, min, max)
                 this.mods.push(augmented)
             }
         }, { deep: true })
@@ -173,21 +149,21 @@ export default defineComponent({
     background-color: #a29162;
     font-size: 0.75rem;
     min-width: 75px;
-    width: 15%;
+    width: 10%;
 }
 
 .item-pseudo {
     background-color: #232420;
     font-size: 0.75rem;
     min-width: 75px;
-    width: 15%;
+    width: 10%;
 }
 
 .item-enchant {
     background-color: #8b579c;
     font-size: 0.75rem;
     min-width: 75px;
-    width: 15%;
+    width: 10%;
 }
 
 
@@ -195,38 +171,38 @@ export default defineComponent({
     background-color: #65621e;
     font-size: 0.75rem;
     min-width: 75px;
-    width: 15%;
+    width: 10%;
 }
 
 .item-veiled {
     background-color: #545c63;
     font-size: 0.75rem;
     min-width: 75px;
-    width: 15%;
+    width: 10%;
 }
 
 .item-crafted {
     background-color: #0060bf;
     font-size: 0.75rem;
     min-width: 75px;
-    width: 15%;
+    width: 10%;
 }
 
 .item-scourge {
     background-color: #ff6e25;
     font-size: 0.75rem;
     min-width: 75px;
-    width: 15%;
+    width: 10%;
 }
 
 .item-explicit {
     background-color: #626468;
     font-size: 0.75rem;
     min-width: 75px;
-    width: 15%;
+    width: 10%;
 }
 
 .input-stretch {
-    width: 15% !important
+    width: 7% !important;
 }
 </style>

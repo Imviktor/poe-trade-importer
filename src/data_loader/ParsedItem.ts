@@ -38,12 +38,12 @@ export class ItemRequirements {
 
 export class Modifier {
     itemMod: string
-    modVariants: ModVariant[]
+    variants: ModVariant[]
     arg: Argument
 
     constructor(itemMod: string, modVariants: ModVariant[], arg: Argument) {
         this.itemMod = itemMod
-        this.modVariants = modVariants
+        this.variants = modVariants
         this.arg = arg
     }
 
@@ -70,10 +70,11 @@ export class Argument {
     constructor(value: string, isNegative: boolean)
     constructor(value: string, isNegative: boolean, options: Option[])
     constructor(value: string, isNegative?: boolean, options?: Option[]) {
-        this.value = value == 'an' ? '1' : value
+        value = value == 'an' ? '1' : value
         this.isNegative = isNegative !== undefined ? isNegative : false
         this.isNumeric = new RegExp('^[\-\+]?[\.0-9]+$', 'gi').test(value)
         this.options = options !== undefined ? options : []
+        this.value = value
     }
 
     static withOptions(value: string, options: Option[]): Argument {
@@ -84,20 +85,22 @@ export class Argument {
 
 export class AugmentedModifier {
     itemMod: string
-    selectedVariantId: string
-    modVariants: ModVariant[]
+    selectedVariant: number
+    variants: ModVariant[]
     arg: Argument
     options?: string[]
     valueMin?: number
     valueMax?: number
+    selected?: boolean
 
-    constructor(mod: Modifier, selectedVariantId: string, valueMin?: number, valueMax?: number) {
+    constructor(mod: Modifier, selectedVariant: number, valueMin?: number, valueMax?: number, selected?: boolean) {
         this.itemMod = mod.itemMod
-        this.selectedVariantId = selectedVariantId
-        this.modVariants = mod.modVariants
+        this.selectedVariant = selectedVariant
+        this.variants = mod.variants
         this.arg = mod.arg
         this.valueMin = valueMin
         this.valueMax = valueMax
+        this.selected = selected !== undefined ? selected : true
     }
 
 }

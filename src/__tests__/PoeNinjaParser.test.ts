@@ -4,36 +4,36 @@ import { Requests } from '../data_loader/PoeRequests'
 test('testing parser', async () => {
     const stats = await Requests.getStats().then(response => { return response })
     const parsedItem = new PoeNinjaParser().parseItem("Rarity: Rare\n" +
-        "Maelström Strike\n" +
-        "Spine Bow\n" +
-        "--------\n" +
-        "Item Level: 83\n" +
-        "--------\n" +
-        "Bow\n" +
-        "Quality: +30%\n" +
-        "Physical Damage: 38-115\n" +
-        "Critical Strike Chance: 8.25%\n" +
-        "Attacks per Second: 1.68\n" +
-        "--------\n" +
-        "Requirements:\n" +
-        "Level: 80\n" +
-        "Str: 62\n" +
-        "Dex: 212\n" +
-        "Int: 159\n" +
-        "--------\n" +
-        "Sockets: G-W-W-W-B-B\n" +
-        "--------\n" +
-        "Quality does not increase Physical Damage (enchant)\n" +
-        "1% increased Attack Speed per 8% Quality (enchant)\n" +
-        "--------\n" +
-        "Socketed Gems are supported by Level 18 Cast On Critical Strike\n" +
-        "143% increased Spell Damage\n" +
-        "17% increased Attack Speed\n" +
-        "+34% to Global Critical Strike Multiplier\n" +
-        "Damage Penetrates 12% Elemental Resistances\n" +
-        "27% increased Critical Strike Chance (crafted)\n" +
-        "--------\n" +
-        "Shaper Item\n", stats)
+    "Vortex Wrap\n" +
+    "Astral Plate\n" +
+    "--------\n" +
+    "Item Level: 85\n" +
+    "--------\n" +
+    "Quality: +20%\n" +
+    "Armour: 804\n" +
+    "--------\n" +
+    "Requirements:\n" +
+    "Level: 80\n" +
+    "Str: 180\n" +
+    "Dex: 98\n" +
+    "Int: 111\n" +
+    "--------\n" +
+    "Sockets: R-R-G-R-B-R\n" +
+    "--------\n" +
+    //"Quality does not increase Defences (enchant)\n" +
+    //"Grants +1 to Maximum Life per 2% Quality (enchant)\n" +
+    // "--------\n" +
+    // "+12% to all Elemental Resistances (implicit)\n" +
+    // "--------\n" +
+    // "Socketed Attacks have -15 to Total Mana Cost\n" +
+    // "+36 to Armour\n" +
+    // "23% increased Stun and Block Recovery\n" +
+    "You can apply an additional Curse\n" +
+    "Attacks have +1.4% to Critical Strike Chance\n" +
+    "+82 to maximum Life (crafted)\n" +
+    "--------\n" +
+    "Hunter Item\n" +
+    "Warlord Item\n", stats)
 
     console.log(parsedItem.mods)
 })

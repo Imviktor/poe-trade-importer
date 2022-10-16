@@ -111,7 +111,8 @@ function _buildModifiers(mods: Modifier[], list: string[], type: ModifierGroup, 
   for (let mod of list) {
 
     // Replace type mentioned in the mod
-    mod = mod.replace(" (enchant)", "")
+    mod = mod.replace(" (implicit)", "")
+      .replace(" (enchant)", "")
       .replace(" (crafted)", "")
       .replace(" (fractured)", "")
       .replace(" (veiled)", "")

@@ -82,7 +82,6 @@ export default defineComponent({
             "Implicits: 2\n" +
             "{crafted}Ice Spear fires an additional Projectile\n" +
             "Inflict Cold Exposure on Hit, applying -12% to Cold Resistance\n" +
-            "While a Unique Enemy is in your Presence, 55% chance to Unnerve Enemies for 4 seconds on Hit\n" +
             "Adds 3 to 5 Physical Damage to Attacks\n" +
             "14% increased Attack Speed\n" +
             "22% increased Global Critical Strike Chance\n" +
