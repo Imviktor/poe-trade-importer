@@ -4,18 +4,29 @@ import { Requests } from '../data_loader/PoeRequests'
 test('testing parser', async () => {
     const stats = await Requests.getStats().then(response => {return response})
     const parsedItem = new PoBParser().parseItem("Rarity: RARE\n" +
-    "Maelstrom Creed\n" +
-    "Medium Cluster Jewel\n" +
-    "Unique ID: fd802584af12d08145a0ad71ca302282352a9b6d66477c434d3aa34db5ad83ab\n" +
-    "Item Level: 83\n" +
-    "LevelReq: 40\n" +
-    "Implicits: 3\n" +
-    "{crafted}Adds 4 Passive Skills\n" +
-    "{crafted}1 Added Passive Skill is a Jewel Socket\n" +
-    "{crafted}Added Small Passive Skills grant: 10% increased Projectile Damage\n" +
-    "Added Small Passive Skills also grant: +3% to Chaos Resistance\n" +
-    "1 Added Passive Skill is Eye to Eye\n" +
-    "1 Added Passive Skill is Repeater          ", stats)
+    "Dragon Touch\n" +
+    "Wyrmscale Gauntlets\n" +
+    "Armour: 150\n" +
+    "ArmourBasePercentile: 1\n" +
+    "Evasion: 150\n" +
+    "EvasionBasePercentile: 1\n" +
+    "Unique ID: da76174b46c0a3c4e231b3a75079645557bea17b715ff6e7d5f2aee2b0cd0822\n" +
+    "Item Level: 85\n" +
+    "Quality: 20\n" +
+    "Sockets: G-G-G-G\n" +
+    "LevelReq: 70\n" +
+    "Implicits: 2\n" +
+    "{crafted}Ice Spear fires an additional Projectile\n" +
+    "Inflict Cold Exposure on Hit, applying -12% to Cold Resistance\n" +
+    "Adds 3 to 5 Physical Damage to Attacks\n" +
+    "14% increased Attack Speed\n" +
+    "22% increased Global Critical Strike Chance\n" +
+    "24% increased Armour and Evasion\n" +
+    "+46% to Cold Resistance\n" +
+    "11% increased Stun and Block Recovery\n" +
+    "33% increased Damage with Hits against Chilled Enemies\n" +
+    "Adds 25 to 31 Chaos Damage if you've dealt a Critical Strike Recently\n" +
+    "{crafted}+62 to maximum Life", stats)
 
     console.log(parsedItem.mods)
 })

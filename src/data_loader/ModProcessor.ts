@@ -41,7 +41,8 @@ export class ProcessedMod {
 
 const replacements: { [index: string]: Replacement; } = {
     'reduced': new Replacement('increased', ReplacementOperation.Negative),
-    'Curse': new Replacement('Curses')
+    'Curse': new Replacement('Curses'),
+    'fire an additional Arrow': new Replacement('fire an additional Arrows')
 }
 
 

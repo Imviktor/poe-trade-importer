@@ -14,7 +14,7 @@ enum Sections {
   EnchantModifiers = '(.*)\\s\\(enchant\\)',
   ImplicitModifiers = '(.*)\\s\\(implicit\\)',
   ExplicitModifiers = '',
-  Special = '(Shaper|Elder|Crusader|Fractured|Veiled|Corrupted)( Item)?',
+  Special = '(Shaper|Elder|Crusader|Fractured|Veiled|Corrupted|Synthesised)( Item)?',
   Radius = 'Radius: (Small|Medium|Large|Variable)',
   Unknown = 'Unknown'
 }

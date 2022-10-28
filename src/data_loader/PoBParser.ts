@@ -11,6 +11,8 @@ export class PoBParser implements IParser {
 
 }
 
+const SPECIAL = "(Shaper|Elder|Crusader|Fractured|Veiled|Corrupted)"
+
 function parseItem(item: string, stats: Stat[]): ParsedItem {
 
     // Workaround to read the last line if the text does not end with \n
@@ -44,6 +46,11 @@ function parseItem(item: string, stats: Stat[]): ParsedItem {
     }
 
     const modifiers = sections[1]
+
+    const lastLine = modifiers.at(modifiers.length - 1)
+    if(lastLine?.match(SPECIAL)) {
+        modifiers.pop()
+    }
 
     parsedItem.mods = _buildModifiers(parsedItem.mods, parsedItem.description.baseItem, nImplicits, modifiers, stats)
     return parsedItem

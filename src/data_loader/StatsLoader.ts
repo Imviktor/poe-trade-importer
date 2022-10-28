@@ -32,7 +32,6 @@ export function processStats(stats: StatsResult): Stat[] {
                 _preparePseudos(entries.entries).forEach(s => statList.push(s))
             } else {
                 for (const entry of entries.entries) {
-
                     // Replace before escaping
                     entry.regexp = entry.text
                         .replace('an additional', '# additional')

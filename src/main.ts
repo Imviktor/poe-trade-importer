@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { BootstrapVue3, BToastPlugin } from 'bootstrap-vue-3'
 import { store } from './web/store/store'
+import vTitle from 'vuejs-title'
 
 import App from './web/App.vue'
 
@@ -11,6 +12,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 
 
 createApp(App)
+    .use(vTitle)
     .use(BootstrapVue3)
     .use(BToastPlugin)
     .use(store)

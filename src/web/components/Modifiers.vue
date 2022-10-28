@@ -40,7 +40,7 @@
             </div>
             <select class="m-2 form-select-sm bg-dark text-white" style="width: 13%;" v-model="mod.selectedVariant"
                 :disabled="mod.variants.length ==1">
-                <option v-for="(variant, j) in mod.variants" :key="variant.type" :value="j">
+                <option v-for="(variant, j) in mod.variants" :key="variant.type" :value="j" :title="variant.id">
                     {{variant.type}}
                 </option>
             </select>
